@@ -16,11 +16,6 @@ public class ScreenTools {
 		return new Robot().createScreenCapture(new Rectangle(0, 0, screenshotDimensions.width, screenshotDimensions.height));
 	}
 
-	// Takes a screenshot from the given Rect
-	public static BufferedImage takeScreenshot(Rectangle screenshotRectangle) throws AWTException {
-		return new Robot().createScreenCapture(screenshotRectangle);
-	}
-
 	// Returns the maximum screen sizes (TODO: Test for multiple monitors on top of
 	// each other)
 	public static Dimension getMaxDimensions() {

@@ -12,8 +12,8 @@ public class Painter {
 
 	private JComponent component;
 	private CropTarget target;
-	private Stroke defaultStroke;
 	private Stroke borderStroke; 
+	public Stroke defaultStroke;
 
 	public Painter(JComponent component, CropTarget target) {
 		this.component = component;
@@ -33,20 +33,25 @@ public class Painter {
 		try {
 			if (defaultStroke == null)
 				defaultStroke = g2d.getStroke();
-			
+			// Paint
 			g2d.setStroke(borderStroke);
 			g2d.setColor(Color.white);
 			g2d.drawRect(target.x, target.y, target.width, target.height);
+			
+			// Reset
+			g2d.setStroke(defaultStroke);
+			
 		} catch (Exception e) {
 			// Do nothing
 		}
 	}
 	
 	public void drawDragPoints(Graphics2D g2d) {
+		if (target.width == 0 || target.height == 0) return;
+		
 		DragPoint[] dragPoints = target.calcDragPoints();
 		
 		// Paint drag-points
-		g2d.setStroke(defaultStroke);
 		for (DragPoint point : dragPoints) {
 			g2d.setColor(Color.black);
 			g2d.fillRect(point.position.x, point.position.y, 6, 6);

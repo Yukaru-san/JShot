@@ -1,18 +1,17 @@
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Callable;
-import java.util.function.Function;
 
 import javax.swing.KeyStroke;
 
+import ui.Overlays;
 import ui.ScreenshotWindow;
 import ui.crop.CroppingPanel;
 import ui.states.CroppingState;
 
 public class Main {
-
+	
 	public static void main(String[] args) throws Exception {
 		Dimension d = ScreenTools.getMaxDimensions();
 		BufferedImage img = ScreenTools.takeScreenshot(d);
@@ -39,14 +38,8 @@ public class Main {
 	
 	// Adds State-Related Paintings to the Cropping Panel
 	public static void prepareStateEvents(CroppingPanel p) {
-		p.addStateEvent(CroppingState.CROPPING_START, new Function<Graphics2D, Object>() {
-	
-			@Override
-			public Object apply(Graphics2D g2d) {
-				g2d.fillRect(0, 0, 500, 500);
-				return null;
-			}
-			
-		});
+		p.addStateEvent(CroppingState.CROPPING_START, Overlays.DRAW_INITIAL_TOOLTIP);
+		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_OVERLAY_HORIZONTAL);
+		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_OVERLAY_VERTICAL);
 	}
 }

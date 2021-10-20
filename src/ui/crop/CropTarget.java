@@ -17,17 +17,19 @@ public class CropTarget {
 	public float strokeSize;
 	public int cursorStyle;
 	public CroppingState currentState;
-
+	public Point mousePosition;
+	
 	// Class-Only Variables
 	private Point maxBounds;
 	private int hiddenWidth;
 	private int hiddenHeight;
 
 	public CropTarget(float strokeSize, Point maxBounds) {
-		x = 50;
-		y = 50;
-		width = 250;
-		height = 200;
+		x = 0;
+		y = 0;
+		width = 0;
+		height = 0;
+		mousePosition = null;
 
 		this.strokeSize = strokeSize;
 		this.maxBounds = maxBounds;
@@ -36,6 +38,8 @@ public class CropTarget {
 	}
 
 	public DragPoint[] calcDragPoints() {
+		if (width == 0 || height == 0) return new DragPoint[0];
+		
 		// Calculate drag-point positions
 		DragPoint[] dragPoints = new DragPoint[] {
 				new DragPoint(new Point(x - 3 + (width / 2), y - 3), DragDirection.NORTH), // North-West
@@ -149,5 +153,13 @@ public class CropTarget {
 	public void scaleWest(Rectangle startPosition, Point targetPosition) {
 		setX(Math.min(startPosition.x + startPosition.width, targetPosition.x));
 		setWidth(Math.abs(startPosition.x + startPosition.width - targetPosition.x));
+	}
+
+	public Point getmousePosition() {
+		return mousePosition;
+	}
+
+	public void setmousePosition(Point mousePosition) {
+		this.mousePosition = mousePosition;
 	}
 }
