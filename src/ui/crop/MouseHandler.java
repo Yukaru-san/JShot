@@ -41,7 +41,7 @@ public class MouseHandler extends MouseAdapter {
 				if (stateEvent.getBounds() != null) {
 					Rectangle bounds = stateEvent.getBounds();
 					
-					if (target.mousePosition.x >= bounds.x && target.mousePosition.x <= bounds.x + bounds.width ||
+					if (target.mousePosition.x >= bounds.x && target.mousePosition.x <= bounds.x + bounds.width &&
 							target.mousePosition.y >= bounds.y && target.mousePosition.y <= bounds.y + bounds.height) {
 						stateEvent.setBounds(stateEvent.eventFunction.onClick());
 						ignorePressEvent = true;

@@ -4,7 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.ImageObserver;
 import java.awt.image.WritableRaster;
+
+import javax.imageio.ImageIO;
+
+import ui.Overlays;
 
 public class Collection {
 
@@ -26,4 +31,15 @@ public class Collection {
 		return darkenedImage;
 	}
 
+	public static BufferedImage loadEmbeddedImage(String path) {
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(Overlays.class.getResourceAsStream(path));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return img;
+	}
 }

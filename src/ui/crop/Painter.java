@@ -21,12 +21,16 @@ public class Painter {
 		borderStroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{target.strokeSize}, 0);
 	}
 	
-	public void drawImage(Graphics2D g2d, BufferedImage image) {
+	public void drawImageWithinTarget(Graphics2D g2d, BufferedImage image) {
 		try {
 			g2d.drawImage(image.getSubimage(target.x, target.y-5, target.width, target.height), target.x, target.y, component);
 		} catch (Exception e) {
 			// Do nothing
 		}
+	}
+	
+	public void drawImageAt(Graphics2D g2d, BufferedImage image, int x, int y) {
+		g2d.drawImage(image, x, y, component);
 	}
 	
 	public void drawBorder(Graphics2D g2d) {

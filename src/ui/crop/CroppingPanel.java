@@ -83,7 +83,7 @@ public class CroppingPanel extends JPanel {
 		inputMap.put(keyStroke, keyStroke.toString());
 		actionMap.put(keyStroke.toString(), new KeyAction(keyStroke.toString(), targetFunc));
 	}
-
+	
 	// Implements a Method to call when within a specific CroppingState. Called
 	// every fixed Update.
 	public void addStateEvent(CroppingState croppingState, StateEvent function) {
@@ -102,6 +102,11 @@ public class CroppingPanel extends JPanel {
 	public CropTarget getCropTarget() {
 		return painter.getTarget();
 	}
+	
+	public BufferedImage getCroppedImage() {
+		CropTarget target = painter.getTarget();
+		return origImg.getSubimage(target.x, target.y-5, target.width, target.height);
+	}
 
 	@Override
 	// Paint the UI
@@ -110,7 +115,7 @@ public class CroppingPanel extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 
 		// Paint Borders
-		painter.drawImage(g2d, origImg);
+		painter.drawImageWithinTarget(g2d, origImg);
 		painter.drawBorder(g2d);
 		painter.drawDragPoints(g2d);
 
