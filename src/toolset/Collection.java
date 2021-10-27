@@ -2,6 +2,8 @@ package toolset;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ImageObserver;
@@ -41,5 +43,11 @@ public class Collection {
 		}
 		
 		return img;
+	}
+	
+	// Returns true if p is within r
+	public static boolean isPointInBounds(Point p, Rectangle r) {
+		return (p.x > r.x && p.x < r.x + r.width &&
+				p.y > r.y && p.y < r.y + r.height);
 	}
 }

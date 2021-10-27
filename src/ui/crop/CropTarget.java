@@ -1,8 +1,10 @@
 package ui.crop;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import ui.states.CroppingState;
 import ui.states.DragDirection;
@@ -15,9 +17,15 @@ public class CropTarget {
 	public int width;
 	public int height;
 	public float strokeSize;
-	public int cursorStyle;
+
 	public CroppingState currentState;
+
+	public int cursorStyle;
 	public Point mousePosition;
+	public boolean mousePressed;
+	
+	public ArrayList<Point> drawingPoints;
+	public Color drawingColor = Color.RED;
 	
 	// Class-Only Variables
 	private Point maxBounds;
@@ -29,14 +37,21 @@ public class CropTarget {
 		y = 0;
 		width = 0;
 		height = 0;
+		
+		currentState = CroppingState.CROPPING_INIT;
+		
+		cursorStyle = Cursor.DEFAULT_CURSOR;
 		mousePosition = null;
+		mousePressed = false;
 
 		this.strokeSize = strokeSize;
 		this.maxBounds = maxBounds;
-
-		cursorStyle = Cursor.DEFAULT_CURSOR;
+		
+		drawingPoints = new ArrayList<Point>();
 	}
-
+		
+		
+	// Returns the Points where the resizing-points should be placed
 	public DragPoint[] calcDragPoints() {
 		if (width == 0 || height == 0) return new DragPoint[0];
 		

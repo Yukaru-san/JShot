@@ -1,6 +1,7 @@
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 import javax.swing.KeyStroke;
@@ -37,20 +38,25 @@ public class Main {
 	
 	// Adds State-Related Paintings to the Cropping Panel
 	public static void prepareStateEvents(CroppingPanel p) {
+		ArrayList<CroppingState> editPaintStates = new ArrayList<CroppingState>();
+		editPaintStates.add(CroppingState.CROPPING_EDIT);
+		editPaintStates.add(CroppingState.PAINTING);
+		
 		p.addStateEvent(CroppingState.CROPPING_START, Overlays.DRAW_INITIAL_TOOLTIP);
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_OVERLAY_BG);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_OVERLAY_BG);
 		// Horizontal Btns
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_BTN_COPY);
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_BTN_SAVE);
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_BTN_EXIT);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_BTN_COPY);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_BTN_SAVE);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_BTN_EXIT);
 		// Vertical Btns
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_BTN_DRAW);
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_BTN_LINE);
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_BTN_ARROW);
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_BTN_RECTANGLE);
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_BTN_MARKER);
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_BTN_TEXT);
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_BTN_COLOR);
-		p.addStateEvent(CroppingState.CROPPING_EDIT, Overlays.DRAW_UTILITY_BTN_UNDO);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_BTN_DRAW);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_BTN_LINE);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_BTN_ARROW);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_BTN_RECTANGLE);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_BTN_MARKER);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_BTN_TEXT);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_BTN_COLOR);
+		p.addStateEvent(editPaintStates, Overlays.DRAW_UTILITY_BTN_UNDO);
+
 	}
 }

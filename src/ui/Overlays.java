@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import toolset.Collection;
 import ui.crop.CropTarget;
 import ui.crop.Painter;
+import ui.states.CroppingState;
 import ui.states.StateEvent;
 import ui.states.StateEventFunc;
 
@@ -126,7 +127,13 @@ public class Overlays {
 			new Callable<Rectangle>() {
 				@Override
 				public Rectangle call() throws Exception {
-					// TODO .getCroppingPanel().add
+					System.out.println("DRAW");
+					CropTarget target = parentWindow.getCroppingPanel().getCropTarget();
+					if (target.currentState != CroppingState.PAINTING) 
+						target.currentState = CroppingState.PAINTING;
+					else
+						target.currentState = CroppingState.CROPPING_EDIT;
+				
 					return null;
 				}
 			});

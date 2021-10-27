@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import toolset.Collection;
 import ui.states.*;
 
 public class MouseHandler extends MouseAdapter {
@@ -34,6 +35,8 @@ public class MouseHandler extends MouseAdapter {
 
 	@Override
 	public void mousePressed(MouseEvent e) {		
+		target.mousePressed = true;
+		
 		// Check for onClick events
 		ArrayList<StateEvent> stateList = stateEvents.get(target.currentState);
 		if (stateList != null) {
@@ -94,6 +97,9 @@ public class MouseHandler extends MouseAdapter {
 		hoveredDragPoints = target.calcDragPoints();
 		target.mousePosition = e.getPoint();
 		
+		if (target.currentState == CroppingState.PAINTING)
+			return;
+		
 		DragPoint hoveredDragPoint = getHoveredDragPoint(target.mousePosition);
 
 		if (hoveredDragPoint == null) {
@@ -107,7 +113,11 @@ public class MouseHandler extends MouseAdapter {
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {		
+	public void mouseReleased(MouseEvent e) {	
+		target.mousePressed = false;
+		
+		if (target.currentState == CroppingState.PAINTING) return;
+		
 		if (target.width > 0 || target.height > 0) {
 			target.currentState = CroppingState.CROPPING_EDIT;
 			startPosition = new Rectangle(target.x, target.y, target.width, target.height);
@@ -130,6 +140,8 @@ public class MouseHandler extends MouseAdapter {
 		case CROPPING_RESCALE:
 			rescaleTargetRect(e.getPoint());
 			break;
+		case PAINTING:
+			target.mousePosition = e.getPoint();
 		default:
 			// Do nothing
 		}
@@ -169,8 +181,8 @@ public class MouseHandler extends MouseAdapter {
 
 	// Returns true if the given Point is outside the selected rectangle
 	private boolean isMouseOutOfBounds(Point mousePos) {
-		return (mousePos.x < target.x || mousePos.y < target.y || mousePos.x > target.x + target.width
-				|| mousePos.y > target.y + target.height) && getHoveredDragPoint(mousePos) == null;
+		return !(Collection.isPointInBounds(mousePos, new Rectangle(target.x, target.y, target.width, target.height)))
+		&& getHoveredDragPoint(mousePos) == null;
 	}
 
 	// Returns the enum of the currently hit DragPoint
