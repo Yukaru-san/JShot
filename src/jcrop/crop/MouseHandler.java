@@ -1,4 +1,4 @@
-package ui.crop;
+package jcrop.crop;
 
 import java.awt.Cursor;
 import java.awt.Point;
@@ -8,8 +8,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import jcrop.events.StateEvent;
+import jcrop.states.*;
 import toolset.Collection;
-import ui.states.*;
 
 public class MouseHandler extends MouseAdapter {
 
@@ -97,7 +98,7 @@ public class MouseHandler extends MouseAdapter {
 		hoveredDragPoints = target.calcDragPoints();
 		target.mousePosition = e.getPoint();
 		
-		if (target.currentState == CroppingState.PAINTING)
+		if (target.currentState == CroppingState.CUSTOM)
 			return;
 		
 		DragPoint hoveredDragPoint = getHoveredDragPoint(target.mousePosition);
@@ -116,7 +117,7 @@ public class MouseHandler extends MouseAdapter {
 	public void mouseReleased(MouseEvent e) {	
 		target.mousePressed = false;
 		
-		if (target.currentState == CroppingState.PAINTING) return;
+		if (target.currentState == CroppingState.CUSTOM) return;
 		
 		if (target.width > 0 || target.height > 0) {
 			target.currentState = CroppingState.CROPPING_EDIT;
@@ -140,7 +141,7 @@ public class MouseHandler extends MouseAdapter {
 		case CROPPING_RESCALE:
 			rescaleTargetRect(e.getPoint());
 			break;
-		case PAINTING:
+		case CUSTOM:
 			target.mousePosition = e.getPoint();
 		default:
 			// Do nothing

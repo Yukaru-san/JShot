@@ -1,18 +1,15 @@
-package ui.crop;
+package jcrop.crop;
 
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
-import java.util.function.Function;
 
 import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
@@ -22,9 +19,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
+import jcrop.events.UpdateEvent;
+import jcrop.events.StateEvent;
+import jcrop.states.CroppingState;
 import toolset.Collection;
-import ui.states.CroppingState;
-import ui.states.StateEvent;
 
 public class CroppingPanel extends JPanel {
 
@@ -39,6 +37,7 @@ public class CroppingPanel extends JPanel {
 	private Painter painter;
 	private BufferedImage origImg;
 	private MouseHandler mouseHandler;
+	private UpdateEvent<CropTarget> updateCallback;
 
 	// Creates a cropping Overlay for the given bi
 	public CroppingPanel(BufferedImage bi) {
@@ -51,6 +50,7 @@ public class CroppingPanel extends JPanel {
 		origImg = bi;
 		CropTarget target = new CropTarget(3.5f, new Point(bi.getWidth(), bi.getHeight() + 5));
 		painter = new Painter(this, target);
+		updateCallback = null;
 
 		// Set Background
 		JLabel bg = new JLabel(new ImageIcon(Collection.createDarkerBufferedImage(bi)));
@@ -61,13 +61,20 @@ public class CroppingPanel extends JPanel {
 		mouseHandler = new MouseHandler(target, stateEvents);
 		addMouseListener(mouseHandler);
 		addMouseMotionListener(mouseHandler);
-
+		
 		// Timer
 		CroppingPanel p = this;
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
 				p.repaint();
+
+				try {
+					if (updateCallback != null)
+						updateCallback.onUpdate(painter.getTarget());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}, 5, 5);
 	}
@@ -78,12 +85,17 @@ public class CroppingPanel extends JPanel {
 		painter.getTarget().setStrokeSize(strokeSize);
 	}
 
+	// Sets a method to be called whenever the fixed update occurs
+	public void setUpdateCallback(UpdateEvent<CropTarget> callback) {
+		updateCallback = callback;
+	}
+
 	// Implements a Method to call when receiving a given Key Stroke
 	public void addKeyBinding(KeyStroke keyStroke, Callable<Object> targetFunc) {
 		inputMap.put(keyStroke, keyStroke.toString());
 		actionMap.put(keyStroke.toString(), new KeyAction(keyStroke.toString(), targetFunc));
 	}
-	
+
 	// Implements a Method to call when within a specific CroppingState. Called
 	// every fixed Update.
 	public void addStateEvent(CroppingState croppingState, StateEvent function) {
@@ -96,9 +108,9 @@ public class CroppingPanel extends JPanel {
 
 		stateList.add(function);
 	}
-	
+
 	// Implements a Method to call when within specific CroppingStates. Called
-	// every fixed Update. 
+	// every fixed Update.
 	public void addStateEvent(ArrayList<CroppingState> croppingState, StateEvent function) {
 		croppingState.forEach(cs -> {
 			ArrayList<StateEvent> stateList = stateEvents.get(cs);
@@ -117,10 +129,14 @@ public class CroppingPanel extends JPanel {
 	public CropTarget getCropTarget() {
 		return painter.getTarget();
 	}
-	
+
+	public BufferedImage getOriginalImage() {
+		return origImg;
+	}
+
 	public BufferedImage getCroppedImage() {
 		CropTarget target = painter.getTarget();
-		return origImg.getSubimage(target.x, target.y-5, target.width, target.height);
+		return origImg.getSubimage(target.x, target.y - 5, target.width, target.height);
 	}
 
 	@Override
@@ -130,7 +146,6 @@ public class CroppingPanel extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 
 		// Paint Borders
-		painter.userDraw(origImg);
 		painter.drawImageWithinTarget(g2d, origImg);
 		painter.drawBorder(g2d);
 		painter.drawDragPoints(g2d);

@@ -7,15 +7,17 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.concurrent.Callable;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import jcrop.crop.CroppingPanel;
 import toolset.AppPrefs;
 import toolset.TransferableImage;
-import ui.crop.CroppingPanel;
 
 public class ScreenshotWindow extends JFrame {
 
@@ -41,7 +43,7 @@ public class ScreenshotWindow extends JFrame {
 		repaint();
 		setVisible(true);
 	}
-	
+
 	public CroppingPanel getCroppingPanel() {
 		return croppingPanel;
 	}
@@ -49,33 +51,33 @@ public class ScreenshotWindow extends JFrame {
 	// Copies the currently selected Crop of the Screen's Image
 	public void copyCroppedImage() {
 		TransferableImage trans = new TransferableImage(croppingPanel.getCroppedImage());
-        Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
-        c.setContents(trans, new ClipboardOwner() {
+		Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
+		c.setContents(trans, new ClipboardOwner() {
 			@Override
-			public void lostOwnership(Clipboard clipboard, Transferable contents) {	
+			public void lostOwnership(Clipboard clipboard, Transferable contents) {
 			}
-        });
-        System.exit(0);
+		});
+		System.exit(0);
 	}
 
 	// Saves the currently selected Crop of the Screen'n Image
 	public void saveCroppedImage() {
 		setAlwaysOnTop(false);
-	
+
 		try {
 			BufferedImage bi = croppingPanel.getCroppedImage();
 
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			
+
 			fileChooser = new JFileChooser();
 			fileChooser.setAcceptAllFileFilterUsed(false);
-			
+
 			String location = AppPrefs.FileLocation.get(System.getProperty("user.home"));
 			fileChooser.setCurrentDirectory(new File(location));
-			
+
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("Portable Network Graphics (png)", "png");
 			fileChooser.addChoosableFileFilter(filter);
-			
+
 			int userSelection = fileChooser.showSaveDialog(this);
 
 			if (userSelection == JFileChooser.APPROVE_OPTION) {

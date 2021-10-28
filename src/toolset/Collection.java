@@ -6,12 +6,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
-import java.awt.image.ImageObserver;
 import java.awt.image.WritableRaster;
 
 import javax.imageio.ImageIO;
 
-import ui.Overlays;
+import ui.overlay.OverlayHandler;
 
 public class Collection {
 
@@ -36,7 +35,7 @@ public class Collection {
 	public static BufferedImage loadEmbeddedImage(String path) {
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(Overlays.class.getResourceAsStream(path));
+			img = ImageIO.read(OverlayHandler.class.getResourceAsStream(path));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

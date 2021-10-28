@@ -1,4 +1,4 @@
-package ui.crop;
+package jcrop.crop;
 
 import java.awt.event.ActionEvent;
 import java.util.concurrent.Callable;

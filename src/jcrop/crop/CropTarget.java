@@ -1,4 +1,4 @@
-package ui.crop;
+package jcrop.crop;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -6,8 +6,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import ui.states.CroppingState;
-import ui.states.DragDirection;
+import jcrop.states.CroppingState;
+import jcrop.states.DragDirection;
 
 public class CropTarget {
 
@@ -23,10 +23,7 @@ public class CropTarget {
 	public int cursorStyle;
 	public Point mousePosition;
 	public boolean mousePressed;
-	
-	public ArrayList<Point> drawingPoints;
-	public Color drawingColor = Color.RED;
-	
+		
 	// Class-Only Variables
 	private Point maxBounds;
 	private int hiddenWidth;
@@ -46,8 +43,6 @@ public class CropTarget {
 
 		this.strokeSize = strokeSize;
 		this.maxBounds = maxBounds;
-		
-		drawingPoints = new ArrayList<Point>();
 	}
 		
 		
@@ -68,6 +63,14 @@ public class CropTarget {
 		};
 
 		return dragPoints;
+	}
+	
+	// Toggles the CroppingState between Custom / Edit
+	public void toggleCustomCroppingState() {
+		if (currentState != CroppingState.CUSTOM)
+			currentState = CroppingState.CUSTOM;
+		else
+			currentState = CroppingState.CROPPING_EDIT;
 	}
 
 	public int getX() {
@@ -170,11 +173,11 @@ public class CropTarget {
 		setWidth(Math.abs(startPosition.x + startPosition.width - targetPosition.x));
 	}
 
-	public Point getmousePosition() {
+	public Point getMousePosition() {
 		return mousePosition;
 	}
 
-	public void setmousePosition(Point mousePosition) {
+	public void setMousePosition(Point mousePosition) {
 		this.mousePosition = mousePosition;
 	}
 }

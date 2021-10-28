@@ -1,4 +1,4 @@
-package ui.states;
+package jcrop.states;
 
 public enum DragDirection {
 	NORTH,

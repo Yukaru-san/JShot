@@ -1,9 +1,9 @@
-package ui.states;
+package jcrop.events;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import ui.crop.Painter;
+import jcrop.crop.Painter;
 
 public class StateEvent {
 
