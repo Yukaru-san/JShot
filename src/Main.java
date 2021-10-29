@@ -19,7 +19,6 @@ public class Main {
 		Dimension d = ScreenTools.getMaxDimensions();
 		BufferedImage img = ScreenTools.takeScreenshot(d);
 		
-		
 		CroppingPanel p = new CroppingPanel(img);
 		
 		ScreenshotWindow w = new ScreenshotWindow(d, p);
@@ -27,7 +26,7 @@ public class Main {
 		
 		prepareKeyEvents(p);
 		prepareStateEvents(p, oH);
-		prepareUpdateCallback(p, oH);
+		prepareMouseHandler(p, oH);
 	}
 	
 	// Adds KeyEvents to the Cropping Panel
@@ -63,8 +62,9 @@ public class Main {
 		p.addStateEvent(editPaintStates, oH.DRAW_UTILITY_BTN_UNDO);
 	}
 	
-	// Prepares a function that is called on every fixed update
-	public static void prepareUpdateCallback(CroppingPanel p, OverlayHandler oH) {
-		p.setUpdateCallback(oH.UPDATE_CALLBACK);
+	// Prepares a function that handles Mouse Events
+	public static void prepareMouseHandler(CroppingPanel p, OverlayHandler oH) {
+		p.addMouseListener(oH.MOUSE_LISTENER);
+		p.addMouseMotionListener(oH.MOUSE_LISTENER);
 	}
 }

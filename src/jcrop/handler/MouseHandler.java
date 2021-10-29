@@ -1,4 +1,4 @@
-package jcrop.crop;
+package jcrop.handler;
 
 import java.awt.Cursor;
 import java.awt.Point;
@@ -94,7 +94,7 @@ public class MouseHandler extends MouseAdapter {
 			// Do nothing
 		}
 	}
-
+	
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		hoveredDragPoints = target.calcDragPoints();

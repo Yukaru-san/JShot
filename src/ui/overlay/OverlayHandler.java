@@ -1,33 +1,28 @@
 package ui.overlay;
 
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.Callable;
 
-import javax.imageio.ImageIO;
-
-import toolset.Collection;
 import ui.CustomState;
 import ui.Icons;
 import ui.ScreenshotWindow;
-import ui.Icons.List;
 import ui.ScreenshotPainter;
 import jcrop.crop.CropTarget;
 import jcrop.crop.Painter;
 import jcrop.events.UpdateEvent;
+import jcrop.handler.JCropMouseAdapter;
 import jcrop.events.StateEvent;
 import jcrop.events.StateEventFunc;
 import jcrop.states.CroppingState;
+import toolset.Collection;
 
 public class OverlayHandler {
 
@@ -35,24 +30,45 @@ public class OverlayHandler {
 	private ScreenshotWindow parentWindow;
 
 	// Vars related to Overlay-Tools
+	private UndoHistory history;
 	private ScreenshotPainter painter;
 	public CustomState currentCustomState = CustomState.NONE;
+	private boolean wasMouseDown = false;
 
 	public OverlayHandler(ScreenshotWindow window) {
 		painter = new ScreenshotPainter();
 		parentWindow = window;
+		history = new UndoHistory(parentWindow.getCroppingPanel().getOriginalImage());
 	}
 
-	// Used for Custom Events using JCrop
-	public final UpdateEvent<CropTarget> UPDATE_CALLBACK = new UpdateEvent<CropTarget>() {
+	public final JCropMouseAdapter MOUSE_LISTENER = new JCropMouseAdapter() {
 		@Override
-		public void onUpdate(CropTarget target) {
+		public void mouseDragged(MouseEvent e) {
+			CropTarget target = getCropTarget();
+			
 			if (target.currentState != CroppingState.CUSTOM)
 				return;
-
+			
+			target.mousePosition = e.getPoint();
+			
 			switch (currentCustomState) {
 			case PAINTING:
 				painter.doDrawEvent(target, parentWindow.getCroppingPanel().getOriginalImage());
+			default:
+				// Do nothing
+			}
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			CropTarget target = getCropTarget();
+			
+			if (target.currentState != CroppingState.CUSTOM)
+				return;
+			
+			switch (currentCustomState) {
+			case PAINTING:
+				painter.resetDrawEvent();
 			default:
 				// Do nothing
 			}
@@ -162,16 +178,33 @@ public class OverlayHandler {
 			new StateEventFunc<Graphics2D, Painter, Rectangle>() {
 				@Override
 				public Rectangle onState(Graphics2D g2d, Painter painter) {
+					// Get Target
+					CropTarget target = painter.getTarget();
+
 					// Draw Drawing Indicator at Mouse
-					if (currentCustomState == CustomState.PAINTING
-							&& painter.getTarget().currentState == CroppingState.CUSTOM) {
-						Point p = painter.getTarget().mousePosition;
+					if (currentCustomState == CustomState.PAINTING && target.currentState == CroppingState.CUSTOM) {
+						Point p = target.mousePosition;
 
-						g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+						// Dont do anything if not within Bounds
+						if (Collection.isPointInBounds(p,
+								new Rectangle(target.x, target.y, target.width, target.height))) {
 
-						Shape circle = new Ellipse2D.Double(p.x - 2, p.y - 2, 4, 4);
-						g2d.draw(circle);
+							Shape circle = new Ellipse2D.Double(p.x - 2, p.y - 2, 4, 4);
+							g2d.draw(circle);
+
+							// Check if user is painting
+							if (target.mousePressed) {
+								wasMouseDown = true;
+							}
+
+							// Push to Stack when complete
+							else if (!target.mousePressed && wasMouseDown) {
+								wasMouseDown = false;
+								history.push(parentWindow.getCroppingPanel().getOriginalImage());
+							}
+						}
 					}
+
 					// Draw the Icon
 					return OverlayPrefab.drawUtilityIcon(g2d, painter, false, 0, Icons.List.DRAW);
 				}
@@ -180,7 +213,8 @@ public class OverlayHandler {
 				public Rectangle onClick() {
 					toggleCustomCroppingState();
 					currentCustomState = CustomState.PAINTING;
-
+					history.push(parentWindow.getCroppingPanel().getOriginalImage());
+					
 					return null;
 				}
 			});
@@ -189,7 +223,7 @@ public class OverlayHandler {
 			new Callable<Rectangle>() {
 				@Override
 				public Rectangle call() throws Exception {
-					System.out.println("Exit");
+					System.out.println("LINE (TODO)");
 					return null;
 				}
 			});
@@ -198,7 +232,7 @@ public class OverlayHandler {
 			new Callable<Rectangle>() {
 				@Override
 				public Rectangle call() throws Exception {
-					System.out.println("Exit");
+					System.out.println("ARROW (TODO)");
 					return null;
 				}
 			});
@@ -207,7 +241,7 @@ public class OverlayHandler {
 			Icons.List.RECTANGLE, new Callable<Rectangle>() {
 				@Override
 				public Rectangle call() throws Exception {
-					System.out.println("Exit");
+					System.out.println("RECTANGLE (TODO)");
 					return null;
 				}
 			});
@@ -216,7 +250,7 @@ public class OverlayHandler {
 			new Callable<Rectangle>() {
 				@Override
 				public Rectangle call() throws Exception {
-					System.out.println("Exit");
+					System.out.println("MAKER (TODO)");
 					return null;
 				}
 			});
@@ -225,7 +259,7 @@ public class OverlayHandler {
 			new Callable<Rectangle>() {
 				@Override
 				public Rectangle call() throws Exception {
-					System.out.println("Exit");
+					System.out.println("TEXT (TODO)");
 					return null;
 				}
 			});
@@ -234,7 +268,7 @@ public class OverlayHandler {
 			new Callable<Rectangle>() {
 				@Override
 				public Rectangle call() throws Exception {
-					System.out.println("Exit");
+					System.out.println("COLOR (TODO)");
 					return null;
 				}
 			});
@@ -243,7 +277,12 @@ public class OverlayHandler {
 			new Callable<Rectangle>() {
 				@Override
 				public Rectangle call() throws Exception {
-					System.out.println("Exit");
+					BufferedImage img = history.undo();
+					if (img != null)
+						parentWindow.getCroppingPanel().setOriginalImage(img);
+					else
+						painter.resetDrawEvent();
+
 					return null;
 				}
 			});
@@ -251,9 +290,5 @@ public class OverlayHandler {
 	// Sets the JCrop's Sate to Custom / Edit
 	private void toggleCustomCroppingState() {
 		parentWindow.getCroppingPanel().getCropTarget().toggleCustomCroppingState();
-	}
-
-	private void setMouseCursor() {
-
 	}
 }

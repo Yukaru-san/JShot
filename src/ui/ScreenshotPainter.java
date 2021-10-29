@@ -51,4 +51,9 @@ public class ScreenshotPainter {
 	    lastDrawnPoint = target.mousePosition;
 	    g.dispose();
 	}
+	
+	// Resets doDrawEvent by setting lastDrawnPoint to null
+	public void resetDrawEvent() {
+		lastDrawnPoint = null;
+	}
 }
