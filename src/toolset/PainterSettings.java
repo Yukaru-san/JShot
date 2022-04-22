@@ -47,12 +47,10 @@ public class PainterSettings {
 
 			f.close();
 			o.close();
-
-			System.out.println("Using saved data.");
+			
 		} catch (Exception e) {
 			// Use default data instead
 			data = new SettingsData();
-			System.out.println("Using default data.");
 		}
 		
 		// Prepare data-reliant objects

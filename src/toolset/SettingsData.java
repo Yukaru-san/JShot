@@ -19,6 +19,11 @@ public class SettingsData implements Serializable {
 
 	// Load default data on creation
 	public SettingsData() {
+		applyDefault();
+	}
+	
+	// Applies the default settings
+	public void applyDefault() {
 		fontSize = 16;
 		fontName = "Arial";
 		strokeWidth = 3;

@@ -49,7 +49,7 @@ public class SettingsPopup extends JDialog {
 
 	// Outside reference
 	ScreenshotWindow screenshotWindow;
-	
+
 	// Panel references
 	private JPanel settingsPanel;
 	private JPanel colorPanel;
@@ -113,9 +113,10 @@ public class SettingsPopup extends JDialog {
 				box.setPopupVisible(false);
 				lastFont = autocompleteText(editor.getText());
 				editor.setText(lastFont);
-				
+
 				PainterSettings.data.fontName = lastFont;
-				PainterSettings.font = new Font(PainterSettings.data.fontName, Font.BOLD, PainterSettings.data.fontSize);
+				PainterSettings.font = new Font(PainterSettings.data.fontName, Font.BOLD,
+						PainterSettings.data.fontSize);
 				PainterSettings.saveSettings();
 			}
 		});
@@ -175,20 +176,26 @@ public class SettingsPopup extends JDialog {
 			e.printStackTrace();
 		}
 
-		// Add font components
+		// Create the pannel
 		settingsPanel = new JPanel();
-		settingsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		settingsPanel.setBorder(new EmptyBorder(0, 10, 10, 10));
 		getContentPane().add(settingsPanel, BorderLayout.CENTER);
-		settingsPanel.setLayout(new GridLayout(0, 2, 0, 0));
+		settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
 
+		// Create sub panel
+		JPanel upperPanel = new JPanel();
+		upperPanel.setLayout(new GridLayout(0, 2, 0, 0));
+		settingsPanel.add(upperPanel);
+
+		// Add font components
 		JLabel font_lbl = new JLabel("Font");
-		settingsPanel.add(font_lbl);
+		upperPanel.add(font_lbl);
 
 		JPanel font_pnl = new JPanel();
 		font_pnl.setBorder(new EmptyBorder(10, 10, 10, 10));
-		settingsPanel.add(font_pnl);
+		upperPanel.add(font_pnl);
 		font_pnl.setLayout(new GridLayout(0, 1, 0, 0));
-		settingsPanel.add(font_pnl);
+		upperPanel.add(font_pnl);
 
 		JComboBox<String> box = new JComboBox<String>(fonts);
 		box.getModel().setSelectedItem(lastFont);
@@ -199,11 +206,11 @@ public class SettingsPopup extends JDialog {
 		applyAdvancedFontSettings(box);
 
 		JLabel fsize_lbl = new JLabel("Font size");
-		settingsPanel.add(fsize_lbl);
+		upperPanel.add(fsize_lbl);
 
 		JPanel fsize_pnl = new JPanel();
 		fsize_pnl.setBorder(new EmptyBorder(10, 10, 10, 10));
-		settingsPanel.add(fsize_pnl);
+		upperPanel.add(fsize_pnl);
 		fsize_pnl.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JSpinner fsize_input = new JSpinner();
@@ -221,11 +228,11 @@ public class SettingsPopup extends JDialog {
 
 		// Add stroke size components
 		JLabel ssize_lbl = new JLabel("Stroke size");
-		settingsPanel.add(ssize_lbl);
+		upperPanel.add(ssize_lbl);
 
 		JPanel ssize_pnl = new JPanel();
 		ssize_pnl.setBorder(new EmptyBorder(10, 10, 10, 10));
-		settingsPanel.add(ssize_pnl);
+		upperPanel.add(ssize_pnl);
 		ssize_pnl.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JSpinner ssize_input = new JSpinner();
@@ -245,11 +252,11 @@ public class SettingsPopup extends JDialog {
 
 		// Add highlighted stroke size components
 		JLabel h_ssize_lbl = new JLabel("Highlighted stroke size");
-		settingsPanel.add(h_ssize_lbl);
+		upperPanel.add(h_ssize_lbl);
 
 		JPanel h_ssize_pnl = new JPanel();
 		h_ssize_pnl.setBorder(new EmptyBorder(10, 10, 10, 10));
-		settingsPanel.add(h_ssize_pnl);
+		upperPanel.add(h_ssize_pnl);
 		h_ssize_pnl.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JSpinner h_ssize_input = new JSpinner();
@@ -269,11 +276,11 @@ public class SettingsPopup extends JDialog {
 
 		// Add color components
 		JLabel color_lbl = new JLabel("Color");
-		settingsPanel.add(color_lbl);
+		upperPanel.add(color_lbl);
 
 		JPanel color_in_pnl = new JPanel();
 		color_in_pnl.setBorder(new EmptyBorder(10, 10, 10, 10));
-		settingsPanel.add(color_in_pnl);
+		upperPanel.add(color_in_pnl);
 		color_in_pnl.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		color_preview = new JPanel();
@@ -295,11 +302,11 @@ public class SettingsPopup extends JDialog {
 
 		// Add highlighted color components
 		JLabel h_color_lbl = new JLabel("Highlight color");
-		settingsPanel.add(h_color_lbl);
+		upperPanel.add(h_color_lbl);
 
 		JPanel h_color_in_pnl = new JPanel();
 		h_color_in_pnl.setBorder(new EmptyBorder(10, 10, 10, 10));
-		settingsPanel.add(h_color_in_pnl);
+		upperPanel.add(h_color_in_pnl);
 		h_color_in_pnl.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		h_color_preview = new JPanel();
@@ -318,6 +325,51 @@ public class SettingsPopup extends JDialog {
 
 		});
 		h_color_in_pnl.add(h_color_input);
+
+		// create the lower part's panel
+		JPanel lowerPanel = new JPanel();
+		lowerPanel.setLayout(new GridLayout(0, 2, 10, 0));
+		lowerPanel.setBorder(new EmptyBorder(0, 100, 0, 100));
+		lowerPanel.setPreferredSize(new Dimension(0, 50));
+		settingsPanel.add(lowerPanel);
+
+		// Reset btn - resets all default values and applies them
+		JButton reset_btn = new JButton("reset");
+		reset_btn.setFont(Constants.SETTINGS_BTN_FONT);
+		reset_btn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PainterSettings.data.applyDefault();
+				PainterSettings.saveSettings();
+
+				fsize_input.setValue(PainterSettings.data.fontSize);
+				h_ssize_input.setValue(PainterSettings.data.h_strokeWidth);
+				color_preview.setBackground(PainterSettings.data.color);
+				h_color_preview.setBackground(PainterSettings.data.h_color);
+
+				JTextComponent editor = (JTextComponent) box.getEditor().getEditorComponent();
+				lastFont = PainterSettings.data.fontName;
+				editor.setText(lastFont);
+
+				repaint();
+			}
+
+		});
+		lowerPanel.add(reset_btn);
+
+		// Exit btn
+		JButton exit_btn = new JButton("exit");
+		exit_btn.setFont(Constants.SETTINGS_BTN_FONT);
+		exit_btn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+
+		});
+		lowerPanel.add(exit_btn);
 
 		setVisible(true);
 	}
@@ -342,12 +394,9 @@ public class SettingsPopup extends JDialog {
 		btns_pnl.setPreferredSize(new Dimension(0, 50));
 		colorPanel.add(btns_pnl);
 
-		// Btn font
-		Font font = new Font("Arial", Font.PLAIN, 12);
-
 		// Add OK btn
 		JButton ok_btn = new JButton("Ok");
-		ok_btn.setFont(font);
+		ok_btn.setFont(Constants.SETTINGS_BTN_FONT);
 		ok_btn.addActionListener(new ActionListener() {
 
 			@Override
@@ -373,7 +422,7 @@ public class SettingsPopup extends JDialog {
 
 		// Add cancel btn
 		JButton cancel_btn = new JButton("cancel");
-		cancel_btn.setFont(font);
+		cancel_btn.setFont(Constants.SETTINGS_BTN_FONT);
 		cancel_btn.addActionListener(new ActionListener() {
 
 			@Override

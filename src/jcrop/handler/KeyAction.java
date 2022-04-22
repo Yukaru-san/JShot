@@ -22,7 +22,6 @@ public class KeyAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand() + " pressed");
 		try {
 			targetFunc.call();
 		} catch (Exception ex) {
