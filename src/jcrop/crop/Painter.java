@@ -1,12 +1,13 @@
 package jcrop.crop;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
+
+import jcrop.utils.Utils;
 
 public class Painter {
 
@@ -19,7 +20,7 @@ public class Painter {
 	public Painter(JComponent component, CropTarget target) {
 		this.component = component;
 		this.target = target;
-		borderStroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{target.strokeSize}, 0);
+		borderStroke = Utils.createBorderStroke(target.strokeSize);
 	}
 	
 	public void drawImageWithinTarget(Graphics2D g2d, BufferedImage image) {

@@ -6,6 +6,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.concurrent.Callable;
 
@@ -27,12 +28,15 @@ public class ScreenshotWindow extends JFrame {
 	// Reference
 	private CroppingPanel croppingPanel;
 	private JFileChooser fileChooser;
-
+	private SettingsWindow settingsWindow;
+	private Dimension windowSize;
+	
 	// Constructor setting up the frame itself
 	public ScreenshotWindow(Dimension windowSize, CroppingPanel p) {
 		// Set reference
 		croppingPanel = p;
-
+		this.windowSize = windowSize;
+		
 		// Set window size and position
 		setBounds(0, -5, windowSize.width, windowSize.height + 5);
 		setUndecorated(true);
@@ -92,4 +96,17 @@ public class ScreenshotWindow extends JFrame {
 		System.exit(0);
 	}
 
+	// Shows the settings window
+	public void showSettings() {
+		settingsWindow = new SettingsWindow(windowSize, this);
+		setAlwaysOnTop(false);
+		setVisible(false);
+	}
+	
+	// Hides the settings window
+	public void hideSettings() {
+		setAlwaysOnTop(true);
+		setVisible(true);
+		settingsWindow.close();
+	}
 }

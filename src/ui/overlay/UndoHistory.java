@@ -6,56 +6,39 @@ import java.util.Stack;
 import toolset.Collection;
 
 public class UndoHistory {
-	
+
 	private Stack<BufferedImage> stack;
+	private BufferedImage lastImage;
 	private BufferedImage originalImage;
-	private int pointer;
-	private boolean firstUndo;
+	private boolean lastPushed;
 
 	public UndoHistory(BufferedImage originalImage) {
-		pointer = -1;
 		stack = new Stack<BufferedImage>();
-		firstUndo = true;
 		this.originalImage = Collection.cloneBufferedImage(originalImage);
+		lastPushed = false;
 	}
-	
+
 	public void push(BufferedImage img) {
-		deleteElementsAfterPointer(pointer);
-		stack.push(Collection.cloneBufferedImage(img));
-		pointer++;
-		firstUndo = true;
+		if (lastImage != null) {
+			stack.push(Collection.cloneBufferedImage(lastImage));
+		}
+		
+		lastImage = Collection.cloneBufferedImage(img);
+		lastPushed = true;
 	}
 
 	public BufferedImage undo() {
-		if (pointer == -1 || firstUndo && pointer == 0) {
-			pointer = -1;
+		if (!lastPushed) {
+			lastImage = null;
+			lastPushed = false;
+		}
+		
+		if (stack.size() == 0) {
+			lastImage = null;
 			return Collection.cloneBufferedImage(originalImage);
 		}
 		
-		if (firstUndo) { 
-			pointer--;
-			firstUndo = false;
-		}
-		
-		BufferedImage img = stack.get(pointer);
-		pointer--;
-		return img;
-	}
-
-	public BufferedImage redo() {
-		if (pointer == stack.size() - 1)
-			return null;
-		
-		pointer++;
-		BufferedImage img = stack.get(pointer);
-		return img;
-	}
-	
-	private void deleteElementsAfterPointer(int pointer) {
-		if (stack.size() < 1)
-			return;
-		for (int i = stack.size() - 1; i > pointer; i--) {
-			stack.remove(i);
-		}
+		lastImage = stack.pop();
+		return Collection.cloneBufferedImage(lastImage);
 	}
 }

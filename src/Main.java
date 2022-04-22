@@ -4,26 +4,31 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
+import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
 import jcrop.crop.CroppingPanel;
 import jcrop.states.CroppingState;
+import toolset.PainterSettings;
 import toolset.ScreenTools;
-import ui.Icons;
 import ui.ScreenshotWindow;
 import ui.overlay.OverlayHandler;
 
 public class Main {
 	
 	public static void main(String[] args) throws Exception {	
+		// Get dimension and screenshot
 		Dimension d = ScreenTools.getMaxDimensions();
 		BufferedImage img = ScreenTools.takeScreenshot(d);
 		
+		// Create cropper
 		CroppingPanel p = new CroppingPanel(img);
 		
+		// Create screenshot tool
 		ScreenshotWindow w = new ScreenshotWindow(d, p);
 		OverlayHandler oH = new OverlayHandler(w);
 		
+		// Add events
 		prepareKeyEvents(p);
 		prepareStateEvents(p, oH);
 		prepareMouseHandler(p, oH);

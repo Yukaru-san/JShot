@@ -1,5 +1,5 @@
 package ui;
 
 public enum CustomState {
-	NONE, PAINTING
+	NONE, DRAW, LINE, ARROW, RECTANGLE, TEXT
 }

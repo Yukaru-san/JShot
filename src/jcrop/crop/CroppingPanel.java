@@ -63,7 +63,7 @@ public class CroppingPanel extends JPanel {
 		add(bg);
 
 		// Create Mouse Listener
-		mouseHandler = new MouseHandler(target, stateEvents);
+		mouseHandler = new MouseHandler(target, painter, stateEvents);
 		addMouseListener(mouseHandler);
 		addMouseMotionListener(mouseHandler);
 		
@@ -142,6 +142,11 @@ public class CroppingPanel extends JPanel {
 		});
 	}
 
+	// Update the cursor's (default) style based on its current position
+	public void manualUpdateCursorStyle() {
+		mouseHandler.setCursorStyle(painter.getTarget().mousePosition);
+	}
+	
 	// Returns the CropTarget, containg info about the current state and selected
 	// area
 	public CropTarget getCropTarget() {

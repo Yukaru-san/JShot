@@ -3,7 +3,8 @@ package toolset;
 import java.util.prefs.Preferences;
 
 public enum AppPrefs {
-	FileLocation;
+	FileLocation,
+	Settings;
 
 	private static Preferences prefs = Preferences.userRoot().node(AppPrefs.class.getName());
 

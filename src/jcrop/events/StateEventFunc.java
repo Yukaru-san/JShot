@@ -12,6 +12,6 @@ public interface StateEventFunc<Graphics2D, Painter, Rectangle> {
 	public Rectangle onState(Graphics2D g2d, Painter painter);
 	
 	// onClick is called whenever the Event was clicked
-	public Rectangle onClick();
+	public Rectangle onClick(Painter painter);
 
 }

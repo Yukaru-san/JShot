@@ -1,10 +1,8 @@
 package jcrop.crop;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 import jcrop.states.CroppingState;
 import jcrop.states.DragDirection;
@@ -21,6 +19,8 @@ public class CropTarget {
 	public CroppingState currentState;
 
 	public int cursorStyle;
+	public boolean useCustomCursor;
+	
 	public Point mousePosition;
 	public boolean mousePressed;
 		
@@ -38,6 +38,8 @@ public class CropTarget {
 		currentState = CroppingState.CROPPING_INIT;
 		
 		cursorStyle = Cursor.DEFAULT_CURSOR;
+		useCustomCursor = false;
+		
 		mousePosition = null;
 		mousePressed = false;
 
@@ -52,14 +54,14 @@ public class CropTarget {
 		
 		// Calculate drag-point positions
 		DragPoint[] dragPoints = new DragPoint[] {
-				new DragPoint(new Point(x - 3 + (width / 2), y - 3), DragDirection.NORTH), // North-West
-				new DragPoint(new Point(x - 3 + width, y + (height / 2) - 3), DragDirection.EAST), // North-West
-				new DragPoint(new Point(x - 3 + (width / 2), y + height - 3), DragDirection.SOUTH), // North-West
-				new DragPoint(new Point(x - 3, y + (height / 2) - 3), DragDirection.WEST), // North-West
-				new DragPoint(new Point(x - 3, y - 3), DragDirection.NORTH_WEST), // North-West
-				new DragPoint(new Point(x - 3 + width, y - 3), DragDirection.NORTH_EAST), // North-West
-				new DragPoint(new Point(x - 3, y + height - 3), DragDirection.SOUTH_WEST), // North-West
-				new DragPoint(new Point(x - 3 + width, y + height - 3), DragDirection.SOUTH_EAST), // North-West
+				new DragPoint(new Point(x - 3 + (width / 2), y - 3), DragDirection.NORTH),
+				new DragPoint(new Point(x - 3 + width, y + (height / 2) - 3), DragDirection.EAST),
+				new DragPoint(new Point(x - 3 + (width / 2), y + height - 3), DragDirection.SOUTH),
+				new DragPoint(new Point(x - 3, y + (height / 2) - 3), DragDirection.WEST), 
+				new DragPoint(new Point(x - 3, y - 3), DragDirection.NORTH_WEST),
+				new DragPoint(new Point(x - 3 + width, y - 3), DragDirection.NORTH_EAST), 
+				new DragPoint(new Point(x - 3, y + height - 3), DragDirection.SOUTH_WEST),
+				new DragPoint(new Point(x - 3 + width, y + height - 3), DragDirection.SOUTH_EAST),
 		};
 
 		return dragPoints;
@@ -179,5 +181,15 @@ public class CropTarget {
 
 	public void setMousePosition(Point mousePosition) {
 		this.mousePosition = mousePosition;
+	}
+
+
+	public boolean isUseCustomCursor() {
+		return useCustomCursor;
+	}
+
+
+	public void setUseCustomCursor(boolean useCustomCursor) {
+		this.useCustomCursor = useCustomCursor;
 	}
 }

@@ -10,16 +10,19 @@ import java.util.HashMap;
 
 import jcrop.crop.CropTarget;
 import jcrop.crop.DragPoint;
+import jcrop.crop.Painter;
 import jcrop.events.StateEvent;
 import jcrop.states.*;
 import toolset.Collection;
+import ui.overlay.OverlayPrefab;
 
 public class MouseHandler extends MouseAdapter {
 
 	// Given object that handles the cropped dimensions
 	private CropTarget target;
 	private HashMap<CroppingState, ArrayList<StateEvent>> stateEvents;
-	
+	private Painter painter;
+
 	// Used Variables
 	private Rectangle startPosition;
 	private Point startRepositionPoint;
@@ -27,8 +30,9 @@ public class MouseHandler extends MouseAdapter {
 	private DragPoint[] hoveredDragPoints;
 	private boolean ignorePressEvent;
 
-	public MouseHandler(CropTarget t, HashMap<CroppingState, ArrayList<StateEvent>> stateEvents) {
+	public MouseHandler(CropTarget t, Painter painter, HashMap<CroppingState, ArrayList<StateEvent>> stateEvents) {
 		this.stateEvents = stateEvents;
+		this.painter = painter;
 		target = t;
 		target.currentState = CroppingState.CROPPING_START;
 		startPosition = new Rectangle(0, 0, 0, 0);
@@ -37,33 +41,41 @@ public class MouseHandler extends MouseAdapter {
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {		
+	public void mousePressed(MouseEvent e) {
 		target.mousePressed = true;
-		
+
 		// Check for onClick events
 		ArrayList<StateEvent> stateList = stateEvents.get(target.currentState);
 		if (stateList != null) {
 			stateList.forEach(stateEvent -> {
 				if (stateEvent.getBounds() != null) {
 					Rectangle bounds = stateEvent.getBounds();
-					
-					if (target.mousePosition.x >= bounds.x && target.mousePosition.x <= bounds.x + bounds.width &&
-							target.mousePosition.y >= bounds.y && target.mousePosition.y <= bounds.y + bounds.height) {
-						stateEvent.setBounds(stateEvent.eventFunction.onClick());
+
+					// Execute (custom) event function if the click is within bounds
+					if (target.mousePosition.x >= bounds.x && target.mousePosition.x <= bounds.x + bounds.width
+							&& target.mousePosition.y >= bounds.y
+							&& target.mousePosition.y <= bounds.y + bounds.height) {
+						OverlayPrefab.setCursorStyle(painter, Cursor.DEFAULT_CURSOR, false);
+						stateEvent.setBounds(stateEvent.eventFunction.onClick(painter));
 						ignorePressEvent = true;
 						return;
 					}
 				}
 			});
 		}
-		 
+
+		// Ignore the rest if overwritten
+		if (target.useCustomCursor) {
+			return;
+		}
+
 		// If at least one event was called, don't execute the standard behaviour
 		if (ignorePressEvent) {
 			ignorePressEvent = false;
 			return;
 		}
 
- 		// Do Cropping-Tool related OnClickEvents
+		// Do Cropping-Tool related OnClickEvents
 		switch (target.currentState) {
 		case CROPPING_START:
 			// Set the starting point for the initial Rectangle
@@ -94,33 +106,25 @@ public class MouseHandler extends MouseAdapter {
 			// Do nothing
 		}
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		hoveredDragPoints = target.calcDragPoints();
 		target.mousePosition = e.getPoint();
-		
+
 		if (target.currentState == CroppingState.CUSTOM)
 			return;
-		
-		DragPoint hoveredDragPoint = getHoveredDragPoint(target.mousePosition);
 
-		if (hoveredDragPoint == null) {
-			if (isMouseOutOfBounds(e.getPoint())) {
-				target.setCursorStyle(Cursor.DEFAULT_CURSOR);
-			} else {
-				target.setCursorStyle(Cursor.MOVE_CURSOR);
-			}
-		} else
-			setCursorStyle(hoveredDragPoint.direction);
+		setCursorStyle(e.getPoint());
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {	
+	public void mouseReleased(MouseEvent e) {
 		target.mousePressed = false;
-		
-		if (target.currentState == CroppingState.CUSTOM) return;
-		
+
+		if (target.currentState == CroppingState.CUSTOM)
+			return;
+
 		if (target.width > 0 || target.height > 0) {
 			target.currentState = CroppingState.CROPPING_EDIT;
 			startPosition = new Rectangle(target.x, target.y, target.width, target.height);
@@ -131,6 +135,11 @@ public class MouseHandler extends MouseAdapter {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		// Ignore if overwritten
+		if (target.useCustomCursor) {
+			return;
+		}
+
 		switch (target.currentState) {
 		case CROPPING_START:
 			target.currentState = CroppingState.CROPPING_INIT;
@@ -150,6 +159,21 @@ public class MouseHandler extends MouseAdapter {
 		}
 	}
 
+	// Sets the cursor's style depending on the mouse position
+	public void setCursorStyle(Point position) {
+		DragPoint hoveredDragPoint = getHoveredDragPoint(target.mousePosition);
+
+		if (hoveredDragPoint == null) {
+			if (isMouseOutOfBounds(position)) {
+				target.setCursorStyle(Cursor.DEFAULT_CURSOR);
+			} else {
+				target.setCursorStyle(Cursor.MOVE_CURSOR);
+			}
+		} else {
+			setCursorStyle(hoveredDragPoint.direction);
+		}
+	}
+	
 	// Sets the position where the rectangle starts
 	private void updateStartPoint(Point targetPosition) {
 		startPosition = new Rectangle(targetPosition);
@@ -185,7 +209,7 @@ public class MouseHandler extends MouseAdapter {
 	// Returns true if the given Point is outside the selected rectangle
 	private boolean isMouseOutOfBounds(Point mousePos) {
 		return !(Collection.isPointInBounds(mousePos, new Rectangle(target.x, target.y, target.width, target.height)))
-		&& getHoveredDragPoint(mousePos) == null;
+				&& getHoveredDragPoint(mousePos) == null;
 	}
 
 	// Returns the enum of the currently hit DragPoint
@@ -206,6 +230,8 @@ public class MouseHandler extends MouseAdapter {
 
 	// Rescales the Rectangle at one of it's 8 Drag Points
 	public void rescaleTargetRect(Point targetPosition) {
+
+		// Set the correct cursor
 		switch (startRescalePoint.direction) {
 		case NORTH:
 			target.scaleNorth(startPosition, targetPosition);
@@ -240,6 +266,12 @@ public class MouseHandler extends MouseAdapter {
 
 	// Sets the Cursor Style fitting to the given Direction Type
 	private void setCursorStyle(DragDirection type) {
+
+		// Ignore if overwritten
+		if (target.useCustomCursor) {
+			return;
+		}
+
 		switch (type) {
 		case NORTH:
 			target.setCursorStyle(Cursor.N_RESIZE_CURSOR);
