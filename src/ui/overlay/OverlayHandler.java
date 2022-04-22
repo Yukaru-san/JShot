@@ -120,13 +120,6 @@ public class OverlayHandler {
 					g2d.setColor(new Color(100, 100, 100));
 					g2d.drawLine(x + w - 25, y + h - 22, x + w - 25, y + h - 3);
 
-					// Color-selection Rect
-					int x3 = t.x + t.width - 75 + 85;
-					int y3 = t.y + t.height + 10 + 6 * 24 - 205;
-
-					g2d.setColor(Color.RED);
-					g2d.fillRect(x3 + 2, y3 + 2, 21, 20);
-
 					return null;
 				}
 
@@ -472,11 +465,10 @@ public class OverlayHandler {
 				}
 			});
 
-	public final StateEvent DRAW_UTILITY_BTN_COLOR = OverlayPrefab.generateUtilityButton(false, 6, Icons.List.EXPAND,
+	public final StateEvent DRAW_UTILITY_BTN_COLOR = OverlayPrefab.generateUtilityButton(false, 6, Icons.List.SETTINGS,
 			false, new Callable<Rectangle>() {
 				@Override
 				public Rectangle call() throws Exception {
-					System.out.println("COLOR (TODO)");
 					parentWindow.showSettings();
 					return null;
 				}

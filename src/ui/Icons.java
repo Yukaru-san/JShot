@@ -9,20 +9,20 @@ import toolset.Collection;
 public class Icons {
 
 	public enum List {
-		ARROW, CLOSE, COPY, DRAW, EXPAND, LINE,
-		MARKER, RECTANGLE, SAVE, TEXT, UNDO
+		ARROW, CLOSE, COPY, DRAW,  LINE,
+		MARKER, RECTANGLE, TEXT, SETTINGS, SAVE, UNDO
 	}
 
 	public static BufferedImage ICON_ARROW;
 	public static BufferedImage ICON_CLOSE;
 	public static BufferedImage ICON_COPY;
 	public static BufferedImage ICON_DRAW;
-	public static BufferedImage ICON_EXPAND;
 	public static BufferedImage ICON_LINE;
 	public static BufferedImage ICON_MARKER;
 	public static BufferedImage ICON_RECTANGLE;
-	public static BufferedImage ICON_SAVE;
 	public static BufferedImage ICON_TEXT;
+	public static BufferedImage ICON_SETTINGS;
+	public static BufferedImage ICON_SAVE;
 	public static BufferedImage ICON_UNDO;
 
 	static {
@@ -42,7 +42,7 @@ public class Icons {
 			@Override
 			public void run() {
 				ICON_DRAW = Collection.loadEmbeddedImage("resources/draw.png");
-				ICON_EXPAND = Collection.loadEmbeddedImage("resources/expand.png");
+				ICON_SETTINGS = Collection.loadEmbeddedImage("resources/settings.png");
 				ICON_LINE = Collection.loadEmbeddedImage("resources/line.png");
 				ICON_UNDO = Collection.loadEmbeddedImage("resources/undo.png");
 			}
@@ -68,8 +68,8 @@ public class Icons {
 			return ICON_COPY;
 		case DRAW:
 			return ICON_DRAW;
-		case EXPAND:
-			return ICON_EXPAND;
+		case SETTINGS:
+			return ICON_SETTINGS;
 		case LINE:
 			return ICON_LINE;
 		case MARKER:
