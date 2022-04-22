@@ -29,11 +29,11 @@ public class ScreenshotPainter {
 	public void applyGraphicsSettings(Graphics2D g) {
 		if (useHighlight) {
 			g.setRenderingHints(PainterSettings.renderingHints);
-			g.setColor(PainterSettings.h_color);
+			g.setColor(PainterSettings.data.h_color);
 			g.setStroke(PainterSettings.h_stroke);
 		} else {
 			g.setRenderingHints(PainterSettings.renderingHints);
-			g.setColor(PainterSettings.color);
+			g.setColor(PainterSettings.data.color);
 			g.setStroke(PainterSettings.stroke);
 		}
 	}
@@ -42,7 +42,7 @@ public class ScreenshotPainter {
 	public void applyTextGraphicsSettings(Graphics2D g) {
 		g.setRenderingHints(PainterSettings.renderingHints);
 		g.setFont(PainterSettings.font);
-		g.setColor(PainterSettings.color);
+		g.setColor(PainterSettings.data.color);
 	}
 
 	// Apply the current settings on the given graphics
@@ -139,7 +139,7 @@ public class ScreenshotPainter {
 		
 		// Draw
 		g.drawString(input, position.x + 15,
-				position.y + PainterSettings.fontSize / 2 - 5);
+				position.y + PainterSettings.data.fontSize / 2 - 5);
 		g.dispose();
 	}
 }

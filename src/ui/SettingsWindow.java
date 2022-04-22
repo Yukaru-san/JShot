@@ -41,7 +41,7 @@ public class SettingsWindow extends JFrame implements KeyListener {
 		
 		// Add components
 		addBackground();
-		addForeground(windowSize);
+		addForeground();
 	}
 
 	// Adds the background of the frame (the image)
@@ -72,9 +72,8 @@ public class SettingsWindow extends JFrame implements KeyListener {
 	}
 	
 	// Adds the JPanel and its content
-	private void addForeground(Dimension windowSize) {
-		// add(new SettingsPopup(windowSize, screenshotWindow));
-		popup = new SettingsPopup(windowSize, screenshotWindow);
+	private void addForeground() {
+		popup = new SettingsPopup(screenshotWindow);
 	}
 	
 	// Dispose neatly

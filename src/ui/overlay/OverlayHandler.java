@@ -456,12 +456,12 @@ public class OverlayHandler {
 							painter.applyTextGraphicsSettings(g2d);
 							int textWidth = g2d.getFontMetrics().stringWidth(textInput);
 							g2d.drawString(textInput, lastMousePoint.x + 15,
-									lastMousePoint.y + PainterSettings.fontSize / 2);
+									lastMousePoint.y + PainterSettings.data.fontSize / 2);
 
 							// Apply border settings & draw outline
 							painter.applyBorderGraphicsSettings(g2d);
-							g2d.drawRect(lastMousePoint.x + 10, lastMousePoint.y - PainterSettings.fontSize / 2,
-								textWidth + 8, (int) (PainterSettings.fontSize * 1.4));
+							g2d.drawRect(lastMousePoint.x + 10, lastMousePoint.y - PainterSettings.data.fontSize / 2,
+								textWidth + 8, (int) (PainterSettings.data.fontSize * 1.4));
 							
 						}
 

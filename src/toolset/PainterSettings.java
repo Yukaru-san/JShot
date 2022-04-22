@@ -6,31 +6,61 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.awt.RenderingHints.Key;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PainterSettings {
-	public static RenderingHints renderingHints;
 
-	public static int fontSize;
+	public static RenderingHints renderingHints;
+	public static Point lastDrawnPoint;
 	public static Font font;
-	
+
 	public static Stroke stroke;
 	public static Stroke h_stroke;
-	
-	public static Color color;
-	public static Color h_color;
-	
-	public static Point lastDrawnPoint;
-	
-	// Lazy load settings on first usage
+
+	public static SettingsData data;
+
+	// Lazy load settings data
 	static {
-		prepareSettings();
+		loadSettings();
 	}
 	
-	// Prepares the settings using either user or default values
-	public static void prepareSettings() {
+	// Load user settings or default if not present
+	private static void loadSettings() {
+		FileInputStream f;
+		ObjectInputStream o;
+		
+		try {
+			// Try loading saved data
+			f = new FileInputStream(new File(Constants.SAVE_PATH + Constants.SAVE_FILE));
+			o = new ObjectInputStream(f);
+
+			SettingsData d = (SettingsData) o.readObject();
+			data = d;
+
+			f.close();
+			o.close();
+
+			System.out.println("Using saved data.");
+		} catch (Exception e) {
+			// Use default data instead
+			data = new SettingsData();
+			System.out.println("Using default data.");
+		}
+		
+		// Prepare data-reliant objects
+		prepareObjects();
+	}
+
+	// Prepares the objects outside the savable data-object
+	private static void prepareObjects() {
 		// Rendering
 		Map<Key, Object> hintsMap = new HashMap<RenderingHints.Key, Object>();
 		hintsMap.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -38,51 +68,32 @@ public class PainterSettings {
 		hintsMap.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		renderingHints = new RenderingHints(hintsMap);
 
-		// Load from saved config if possible TODO
-		String saveData = AppPrefs.Settings.get("");
-		if (saveData.length() > 0 && loadSettings(saveData)) {
-			return;
-		}		
+		// Font
+		font = new Font(data.fontName, Font.BOLD, data.fontSize);
 		
-		// Load default
-		fontSize = 16;
-		font = new Font("Arial", Font.BOLD, fontSize); 
-		stroke = new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.7f);
-		h_stroke = new BasicStroke(12, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.7f);
-		color = Color.RED;
-		h_color = new Color(255, 255, 0, 50);
+		// Stroke
+		stroke = new BasicStroke(data.strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.7f);
+		h_stroke = new BasicStroke(data.h_strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.7f);
 	}
 
-	// Load user settings
-	private static boolean loadSettings (String data) {
-		String[] settings = data.split("%%");
-		
-		try {
-			fontSize = Integer.parseInt(settings[0]);
-			font = new Font(settings[1], Font.BOLD, fontSize);
-			stroke = new BasicStroke(Integer.parseInt(settings[2]), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.7f);
-			h_stroke = new BasicStroke(Integer.parseInt(settings[3]), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.7f);
-			
-			String[] rgba = settings[4].split(",");
-			color = new Color (Integer.parseInt(rgba[0]), Integer.parseInt(rgba[1]), Integer.parseInt(rgba[2]), Integer.parseInt(rgba[3]));
-			
-			String[] h_rgba = settings[5].split(",");
-			h_color = new Color (Integer.parseInt(h_rgba[0]), Integer.parseInt(h_rgba[1]), Integer.parseInt(h_rgba[2]), Integer.parseInt(h_rgba[3]));
-		} catch (Exception e) {
-			return false;
-		}
-		
-		return true;
-	}
-	
 	// Save current settings
 	public static void saveSettings() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(fontSize).append("%%");
-		sb.append(font.getName()).append("%%");
-		sb.append(fontSize).append("%%");
-		
-		
-	//	AppPrefs.Settings.put(outputFile.getParentFile().getAbsolutePath());
+		FileOutputStream f;
+		ObjectOutputStream o;
+
+		try {
+			File savePath = new File(Constants.SAVE_PATH);
+			savePath.mkdirs();
+
+			f = new FileOutputStream(new File(Constants.SAVE_PATH + Constants.SAVE_FILE));
+			o = new ObjectOutputStream(f);
+
+			o.writeObject(data);
+
+			f.close();
+			o.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
