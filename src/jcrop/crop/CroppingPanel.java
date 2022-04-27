@@ -38,6 +38,9 @@ public class CroppingPanel extends JPanel {
 	private InputMap inputMap;
 	private HashMap<CroppingState, ArrayList<StateEvent>> stateEvents;
 
+	// Timer (needs to be stopped to close app)
+	TimerTask fixedUpdate;
+
 	// Attributes
 	private Painter painter;
 	private BufferedImage origImg;
@@ -69,20 +72,20 @@ public class CroppingPanel extends JPanel {
 		
 		// Timer
 		CroppingPanel p = this;
-		
-		new Timer().scheduleAtFixedRate(new TimerTask() {
-			@Override
+		fixedUpdate = new TimerTask() {				
 			public void run() {
 				p.repaint();
 
 				try {
 					if (updateCallback != null)
 						updateCallback.onUpdate(painter.getTarget());
-				} catch (Exception e) {
+	 			} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		}, 1, 1);
+		};
+					
+		new Timer().scheduleAtFixedRate(fixedUpdate, 1, 1);
 	}
 
 	// Creates a Cropping Panel and sets the stroke's size aswell
@@ -107,13 +110,13 @@ public class CroppingPanel extends JPanel {
 		listener.setCropTarget(painter.getTarget());
 		addMouseListener((MouseAdapter) listener);
 	}
-	
+
 	// Adds a Key Listener to the Cropping Panel
 	public void addMouseMotionListener(JCropMouseAdapter listener) {
 		listener.setCropTarget(painter.getTarget());
 		addMouseMotionListener((MouseAdapter) listener);
 	}
-	
+
 	// Implements a Method to call when within a specific CroppingState. Called
 	// every fixed Update.
 	public void addStateEvent(CroppingState croppingState, StateEvent function) {
@@ -146,21 +149,21 @@ public class CroppingPanel extends JPanel {
 	public void manualUpdateCursorStyle() {
 		mouseHandler.setCursorStyle(painter.getTarget().mousePosition);
 	}
-	
+
 	// Returns the CropTarget, containg info about the current state and selected
 	// area
 	public CropTarget getCropTarget() {
 		return painter.getTarget();
 	}
-	
+
 	public void setOriginalImage(BufferedImage newImg) {
 		origImg = newImg;
 	}
-	
+
 	public BufferedImage getOriginalImage() {
 		return origImg;
 	}
-	
+
 	public BufferedImage getCroppedImage() {
 		CropTarget target = painter.getTarget();
 		return origImg.getSubimage(target.x, target.y - 5, target.width, target.height);
@@ -171,7 +174,7 @@ public class CroppingPanel extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
-		
+
 		// Set Rendering Hints
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -194,5 +197,9 @@ public class CroppingPanel extends JPanel {
 				stateEvent.setBounds(stateEvent.eventFunction.onState(g2d, painter));
 			});
 		}
+	}
+	
+	public void dispose() {
+		fixedUpdate.cancel();
 	}
 }

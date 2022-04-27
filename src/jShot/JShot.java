@@ -52,7 +52,7 @@ public class JShot {
 	/**
 	 * Shows the JShot's settings without opening the rest
 	 */
-	public static void showSettings() {
+	public void showSettings() {
 		new SettingsPopup(null);
 	}
 	
@@ -65,7 +65,9 @@ public class JShot {
 	public void prepareKeyEvents(CroppingPanel p) {
 		p.addKeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), new Callable<Object>() {
 			public Object call() throws Exception {
+				p.dispose();
 				w.dispose();
+				isOpened = false;
 				return null;
 			}
 		});

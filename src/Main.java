@@ -7,10 +7,9 @@ public class Main {
 	public static void main(String[] args) throws Exception {	
 		
 		JShot jShot = new JShot();
-		jShot.takeScreenshot();
 		
-		// Tray.prepareTray(jShot);
-		// Shortcut.prepareShortcut(jShot);
+		Tray.prepareTray(jShot);
+		Shortcut.prepareShortcut(jShot);
 		
 	}
 	

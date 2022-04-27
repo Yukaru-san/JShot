@@ -39,7 +39,9 @@ public class Tray {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					jShot.takeScreenshot();
+					if (!jShot.isOpened()) {
+						jShot.takeScreenshot();
+					}
 				} catch (AWTException e1) {
 					e1.printStackTrace();
 				}
@@ -51,9 +53,10 @@ public class Tray {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JShot.showSettings();
+				if (!jShot.isOpened()) {
+					jShot.showSettings();
+				}
 			}
-			
 		});
 		
 		tray.addSeparator();

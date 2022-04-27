@@ -19,7 +19,9 @@ public class Shortcut {
 			@Override
 			public void call() {
 				try {
-					jShot.takeScreenshot();
+					if (!jShot.isOpened()) {
+						jShot.takeScreenshot();
+					}
 				} catch (AWTException e) {
 					e.printStackTrace();
 				}
