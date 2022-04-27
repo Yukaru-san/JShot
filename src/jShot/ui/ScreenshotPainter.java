@@ -1,4 +1,4 @@
-package ui;
+package jShot.ui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,8 +7,8 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import jcrop.utils.Utils;
-import toolset.PainterSettings;
+import jCrop.utils.Utils;
+import jShot.toolset.PainterSettings;
 
 public class ScreenshotPainter {
 

@@ -1,4 +1,4 @@
-package jcrop.events;
+package jCrop.events;
 
 /*
  * StateEvent lets you implement custom functions during Cropping States.

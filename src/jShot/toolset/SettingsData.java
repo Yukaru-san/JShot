@@ -1,4 +1,4 @@
-package toolset;
+package jShot.toolset;
 
 import java.awt.Color;
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package toolset;
+package jShot.toolset;
 
 import java.util.prefs.Preferences;
 

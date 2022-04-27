@@ -1,4 +1,4 @@
-package ui;
+package jShot.ui;
 
 import java.awt.Dimension;
 
@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import jcrop.crop.CroppingPanel;
-import toolset.Collection;
+import jCrop.crop.CroppingPanel;
+import jUtils.tools.ImageTools;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -56,7 +56,7 @@ public class SettingsWindow extends JFrame implements KeyListener {
 		int y = cp.getCropTarget().getY();
 
 		// Create background
-		JLabel bg = new JLabel(new ImageIcon(Collection.createDarkerBufferedImage(bi)));
+		JLabel bg = new JLabel(new ImageIcon(ImageTools.createDarkerBufferedImage(bi)));
 		JLabel cg = new JLabel(new ImageIcon(ci));
 
 		// Set BG bounds

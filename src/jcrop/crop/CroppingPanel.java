@@ -1,4 +1,4 @@
-package jcrop.crop;
+package jCrop.crop;
 
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -21,13 +21,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-import jcrop.events.UpdateEvent;
-import jcrop.handler.JCropMouseAdapter;
-import jcrop.handler.KeyAction;
-import jcrop.handler.MouseHandler;
-import jcrop.events.StateEvent;
-import jcrop.states.CroppingState;
-import toolset.Collection;
+import jCrop.events.UpdateEvent;
+import jCrop.handler.JCropMouseAdapter;
+import jCrop.handler.KeyAction;
+import jCrop.handler.MouseHandler;
+import jCrop.events.StateEvent;
+import jCrop.states.CroppingState;
+import jUtils.tools.ImageTools;
 
 public class CroppingPanel extends JPanel {
 
@@ -58,7 +58,7 @@ public class CroppingPanel extends JPanel {
 		updateCallback = null;
 
 		// Set Background
-		JLabel bg = new JLabel(new ImageIcon(Collection.createDarkerBufferedImage(bi)));
+		JLabel bg = new JLabel(new ImageIcon(ImageTools.createDarkerBufferedImage(bi)));
 		bg.setBounds(0, 0, bi.getWidth(), bi.getHeight());
 		add(bg);
 

@@ -1,11 +1,11 @@
-package jcrop.crop;
+package jCrop.crop;
 
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import jcrop.states.CroppingState;
-import jcrop.states.DragDirection;
+import jCrop.states.CroppingState;
+import jCrop.states.DragDirection;
 
 public class CropTarget {
 

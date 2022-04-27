@@ -1,4 +1,4 @@
-package ui;
+package jShot.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -6,9 +6,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
-import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.concurrent.Callable;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -16,9 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import jcrop.crop.CroppingPanel;
-import toolset.AppPrefs;
-import toolset.TransferableImage;
+import jCrop.crop.CroppingPanel;
+import jShot.toolset.AppPrefs;
+import jShot.toolset.TransferableImage;
 
 public class ScreenshotWindow extends JFrame {
 

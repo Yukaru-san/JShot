@@ -1,4 +1,4 @@
-package jcrop.events;
+package jCrop.events;
 
 /*
  * UpdateEvent lets you implement custom functions that are called on every Fixed Update.

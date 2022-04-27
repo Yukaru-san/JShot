@@ -1,4 +1,4 @@
-package ui.overlay;
+package jShot.ui.overlay;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -15,21 +15,19 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
-import javax.swing.JPanel;
-
-import ui.CustomState;
-import ui.Icons;
-import ui.Icons.List;
-import ui.ScreenshotWindow;
-import ui.ScreenshotPainter;
-import jcrop.crop.CropTarget;
-import jcrop.crop.Painter;
-import jcrop.handler.JCropMouseAdapter;
-import jcrop.events.StateEvent;
-import jcrop.events.StateEventFunc;
-import jcrop.states.CroppingState;
-import toolset.Collection;
-import toolset.PainterSettings;
+import jShot.toolset.PainterSettings;
+import jShot.ui.CustomState;
+import jShot.ui.Icons;
+import jShot.ui.Icons.List;
+import jShot.ui.ScreenshotWindow;
+import jShot.ui.ScreenshotPainter;
+import jCrop.crop.CropTarget;
+import jCrop.crop.Painter;
+import jCrop.handler.JCropMouseAdapter;
+import jCrop.events.StateEvent;
+import jCrop.events.StateEventFunc;
+import jCrop.states.CroppingState;
+import jUtils.tools.MathTools;
 
 public class OverlayHandler {
 
@@ -410,7 +408,7 @@ public class OverlayHandler {
 					}
 					
 					// If within Bounds
-					if (Collection.isPointInBounds(p, new Rectangle(target.x, target.y, target.width, target.height))) {
+					if (MathTools.isPointInBounds(p, new Rectangle(target.x, target.y, target.width, target.height))) {
 
 						// Catch mouse press
 						if (target.mousePressed) {
@@ -509,7 +507,7 @@ public class OverlayHandler {
 		Point p = target.mousePosition;
 
 		// If within Bounds
-		if (Collection.isPointInBounds(p, new Rectangle(target.x, target.y, target.width, target.height))) {
+		if (MathTools.isPointInBounds(p, new Rectangle(target.x, target.y, target.width, target.height))) {
 
 			// Draw mouse indicator
 			if (drawIndicator) {

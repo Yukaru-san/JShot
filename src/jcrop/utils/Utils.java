@@ -1,4 +1,4 @@
-package jcrop.utils;
+package jCrop.utils;
 
 import java.awt.BasicStroke;
 

@@ -1,4 +1,4 @@
-package jcrop.handler;
+package jCrop.handler;
 
 import java.awt.Cursor;
 import java.awt.Point;
@@ -8,13 +8,13 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import jcrop.crop.CropTarget;
-import jcrop.crop.DragPoint;
-import jcrop.crop.Painter;
-import jcrop.events.StateEvent;
-import jcrop.states.*;
-import toolset.Collection;
-import ui.overlay.OverlayPrefab;
+import jCrop.crop.CropTarget;
+import jCrop.crop.DragPoint;
+import jCrop.crop.Painter;
+import jCrop.events.StateEvent;
+import jCrop.states.*;
+import jShot.ui.overlay.OverlayPrefab;
+import jUtils.tools.MathTools;
 
 public class MouseHandler extends MouseAdapter {
 
@@ -208,7 +208,7 @@ public class MouseHandler extends MouseAdapter {
 
 	// Returns true if the given Point is outside the selected rectangle
 	private boolean isMouseOutOfBounds(Point mousePos) {
-		return !(Collection.isPointInBounds(mousePos, new Rectangle(target.x, target.y, target.width, target.height)))
+		return !(MathTools.isPointInBounds(mousePos, new Rectangle(target.x, target.y, target.width, target.height)))
 				&& getHoveredDragPoint(mousePos) == null;
 	}
 

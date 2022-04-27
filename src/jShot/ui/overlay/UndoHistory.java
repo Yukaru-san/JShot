@@ -1,9 +1,9 @@
-package ui.overlay;
+package jShot.ui.overlay;
 
 import java.awt.image.BufferedImage;
 import java.util.Stack;
 
-import toolset.Collection;
+import jUtils.tools.ImageTools;
 
 public class UndoHistory {
 
@@ -14,16 +14,16 @@ public class UndoHistory {
 
 	public UndoHistory(BufferedImage originalImage) {
 		stack = new Stack<BufferedImage>();
-		this.originalImage = Collection.cloneBufferedImage(originalImage);
+		this.originalImage = ImageTools.cloneBufferedImage(originalImage);
 		lastPushed = false;
 	}
 
 	public void push(BufferedImage img) {
 		if (lastImage != null) {
-			stack.push(Collection.cloneBufferedImage(lastImage));
+			stack.push(ImageTools.cloneBufferedImage(lastImage));
 		}
 		
-		lastImage = Collection.cloneBufferedImage(img);
+		lastImage = ImageTools.cloneBufferedImage(img);
 		lastPushed = true;
 	}
 
@@ -35,10 +35,10 @@ public class UndoHistory {
 		
 		if (stack.size() == 0) {
 			lastImage = null;
-			return Collection.cloneBufferedImage(originalImage);
+			return ImageTools.cloneBufferedImage(originalImage);
 		}
 		
 		lastImage = stack.pop();
-		return Collection.cloneBufferedImage(lastImage);
+		return ImageTools.cloneBufferedImage(lastImage);
 	}
 }

@@ -1,4 +1,4 @@
-package starter;
+package jShot;
 
 import java.awt.AWTException;
 import java.awt.Dimension;
@@ -9,13 +9,12 @@ import java.util.concurrent.Callable;
 
 import javax.swing.KeyStroke;
 
-import jcrop.crop.CroppingPanel;
-import jcrop.states.CroppingState;
-import toolset.ScreenTools;
-import ui.ScreenshotWindow;
-import ui.SettingsPopup;
-import ui.SettingsWindow;
-import ui.overlay.OverlayHandler;
+import jCrop.crop.CroppingPanel;
+import jCrop.states.CroppingState;
+import jShot.toolset.ScreenTools;
+import jShot.ui.ScreenshotWindow;
+import jShot.ui.SettingsPopup;
+import jShot.ui.overlay.OverlayHandler;
 
 public class JShot {
 	
@@ -46,7 +45,7 @@ public class JShot {
 	 * Shows the JShot's settings without opening the rest
 	 */
 	public static void showSettings() {
-		SettingsPopup popup = new SettingsPopup(null);
+		new SettingsPopup(null);
 	}
 	
 	// Adds KeyEvents to the Cropping Panel

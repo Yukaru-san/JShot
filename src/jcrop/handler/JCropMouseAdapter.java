@@ -1,7 +1,7 @@
-package jcrop.handler;
+package jCrop.handler;
 
 import java.awt.event.MouseAdapter;
-import jcrop.crop.CropTarget;
+import jCrop.crop.CropTarget;
 
 /*
  * Used to create a MouseAdapter that has access to the CropTarget.

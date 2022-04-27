@@ -1,4 +1,4 @@
-package jcrop.crop;
+package jCrop.crop;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
-import jcrop.utils.Utils;
+import jCrop.utils.Utils;
 
 public class Painter {
 

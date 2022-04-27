@@ -1,4 +1,4 @@
-package jcrop.states;
+package jCrop.states;
 
 public enum CroppingState {
 	CROPPING_START, CROPPING_INIT, CROPPING_EDIT, CROPPING_REPOSITION, CROPPING_RESCALE, CUSTOM

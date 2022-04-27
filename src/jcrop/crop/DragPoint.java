@@ -1,8 +1,8 @@
-package jcrop.crop;
+package jCrop.crop;
 
 import java.awt.Point;
 
-import jcrop.states.DragDirection;
+import jCrop.states.DragDirection;
 
 public class DragPoint {
 

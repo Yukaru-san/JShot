@@ -1,4 +1,4 @@
-package ui.overlay;
+package jShot.ui.overlay;
 
 /*
  * DrawStateInterface is used to spare some repetitive code on draw-states

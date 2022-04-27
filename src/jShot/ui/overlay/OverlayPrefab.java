@@ -1,4 +1,4 @@
-package ui.overlay;
+package jShot.ui.overlay;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -7,11 +7,11 @@ import java.awt.Rectangle;
 import java.awt.Cursor;
 import java.util.concurrent.Callable;
 
-import jcrop.crop.CropTarget;
-import jcrop.crop.Painter;
-import jcrop.events.StateEvent;
-import jcrop.events.StateEventFunc;
-import ui.Icons;
+import jCrop.crop.CropTarget;
+import jCrop.crop.Painter;
+import jCrop.events.StateEvent;
+import jCrop.events.StateEventFunc;
+import jShot.ui.Icons;
 
 public class OverlayPrefab {
 

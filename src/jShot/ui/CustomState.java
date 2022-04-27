@@ -1,4 +1,4 @@
-package ui;
+package jShot.ui;
 
 public enum CustomState {
 	NONE, DRAW, LINE, ARROW, RECTANGLE, TEXT

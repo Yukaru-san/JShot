@@ -1,4 +1,4 @@
-package ui;
+package jShot.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -31,10 +31,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 
-import toolset.Constants;
-import toolset.Constants.ColorOptions;
-import toolset.PainterSettings;
-import toolset.ScreenTools;
+import jShot.toolset.Constants;
+import jShot.toolset.Constants.ColorOptions;
+import jShot.toolset.PainterSettings;
+import jShot.toolset.ScreenTools;
 
 public class SettingsPopup extends JDialog {
 

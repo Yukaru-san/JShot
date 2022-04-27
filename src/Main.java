@@ -1,4 +1,4 @@
-import starter.JShot;
+import jShot.JShot;
 
 public class Main {
 	

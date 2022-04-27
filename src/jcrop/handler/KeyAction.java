@@ -1,4 +1,4 @@
-package jcrop.handler;
+package jCrop.handler;
 
 import java.awt.event.ActionEvent;
 import java.util.concurrent.Callable;
