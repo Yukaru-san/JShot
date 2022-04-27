@@ -31,10 +31,10 @@ public class Icons {
 			@Override
 			public void run() {
 				try {
-					ICON_ARROW = ImageTools.loadEmbeddedImage("/jShot/ui/overlay/resources/arrow.png");
-					ICON_CLOSE = ImageTools.loadEmbeddedImage("/jShot/ui/overlay/resources/close.png");
-					ICON_COPY = ImageTools.loadEmbeddedImage("/jShot/ui/overlay/resources/copy.png");
-					ICON_TEXT = ImageTools.loadEmbeddedImage("/jShot/ui/overlay/resources/text.png");
+					ICON_ARROW = ImageTools.loadEmbeddedImage("/resources/arrow.png");
+					ICON_CLOSE = ImageTools.loadEmbeddedImage("/resources/close.png");
+					ICON_COPY = ImageTools.loadEmbeddedImage("/resources/copy.png");
+					ICON_TEXT = ImageTools.loadEmbeddedImage("/resources/text.png");
 				} catch (Exception e) {
 					System.err.println("Couldn't load embedded images!");
 				}
@@ -45,10 +45,10 @@ public class Icons {
 			@Override
 			public void run() {
 				try {
-					ICON_DRAW = ImageTools.loadEmbeddedImage("/jShot/ui/overlay/resources/draw.png");
-					ICON_SETTINGS = ImageTools.loadEmbeddedImage("/jShot/ui/overlay/resources/settings.png");
-					ICON_LINE = ImageTools.loadEmbeddedImage("/jShot/ui/overlay/resources/line.png");
-					ICON_UNDO = ImageTools.loadEmbeddedImage("/jShot/ui/overlay/resources/undo.png");
+					ICON_DRAW = ImageTools.loadEmbeddedImage("/resources/draw.png");
+					ICON_SETTINGS = ImageTools.loadEmbeddedImage("/resources/settings.png");
+					ICON_LINE = ImageTools.loadEmbeddedImage("/resources/line.png");
+					ICON_UNDO = ImageTools.loadEmbeddedImage("/resources/undo.png");
 				} catch (Exception e) {
 					System.err.println("Couldn't load embedded images!");
 				}
@@ -59,9 +59,9 @@ public class Icons {
 			@Override
 			public void run() {
 				try {
-					ICON_MARKER = ImageTools.loadEmbeddedImage("/jShot/ui/overlay/resources/marker.png");
-					ICON_RECTANGLE = ImageTools.loadEmbeddedImage("/jShot/ui/overlay/resources/rectangle.png");
-					ICON_SAVE = ImageTools.loadEmbeddedImage("/jShot/ui/overlay/resources/save.png");
+					ICON_MARKER = ImageTools.loadEmbeddedImage("/resources/marker.png");
+					ICON_RECTANGLE = ImageTools.loadEmbeddedImage("/resources/rectangle.png");
+					ICON_SAVE = ImageTools.loadEmbeddedImage("/resources/save.png");
 				} catch (Exception e) {
 					System.err.println("Couldn't load embedded images!");
 				}
