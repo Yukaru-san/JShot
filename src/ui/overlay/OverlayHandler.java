@@ -465,7 +465,7 @@ public class OverlayHandler {
 				}
 			});
 
-	public final StateEvent DRAW_UTILITY_BTN_COLOR = OverlayPrefab.generateUtilityButton(false, 6, Icons.List.SETTINGS,
+	public final StateEvent DRAW_UTILITY_BTN_SETTINGS = OverlayPrefab.generateUtilityButton(false, 6, Icons.List.SETTINGS,
 			false, new Callable<Rectangle>() {
 				@Override
 				public Rectangle call() throws Exception {

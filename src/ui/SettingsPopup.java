@@ -12,12 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -33,8 +29,6 @@ import javax.swing.JComboBox;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.text.JTextComponent;
 
 import toolset.Constants;
@@ -86,17 +80,27 @@ public class SettingsPopup extends JDialog {
 		// Go back to default on close
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				screenshotWindow.hideSettings();
+				hideOrExit();
 			}
 
 			public void windowLostFocus(WindowEvent e) {
-				screenshotWindow.hideSettings();
+				hideOrExit();
 			}
 		});
 
 		// Create frame
 		initializeSettingsPanel();
 		initializeColorPanel();
+	}
+
+	// Hides if opened by screenshotWindow or exit if opened directly
+	private void hideOrExit() {
+			if (screenshotWindow != null) {
+				screenshotWindow.hideSettings();
+				return;
+			}
+			
+			this.dispose();
 	}
 
 	// Makes the font box not auto-focus and adds auto-completion
@@ -365,7 +369,7 @@ public class SettingsPopup extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				hideOrExit();
 			}
 
 		});
