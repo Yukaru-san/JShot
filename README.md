@@ -2,6 +2,10 @@
 JShot is a simple screenshot tool with zero dependencies.<br>
 Based on Lightshot, it contains the typical tools you'd expect but with a lot of customization options!
 
+# JShot v2
+As an alternative to the standard library-free JShot, the V2 branch offers a more complete experience.<br>
+Version 2 will attach an icon to the taskbar and also globally listen for the [PRINT] key!
+
 # Tools
 The following on-screenshot-painting tools are available:
 
